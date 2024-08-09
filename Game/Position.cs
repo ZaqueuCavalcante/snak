@@ -19,8 +19,8 @@ public class Position
 	public override bool Equals(object? obj)
 	{
 		return obj is Position position &&
-			   Row == position.Row &&
-			   Column == position.Column;
+			Row == position.Row &&
+			Column == position.Column;
 	}
 
 	public override int GetHashCode()

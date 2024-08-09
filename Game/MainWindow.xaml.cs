@@ -14,20 +14,14 @@ public partial class MainWindow : Window
 
     private bool _gameIsRunning;
 
-    private readonly Dictionary<CellType, ImageSource> _cellToImage = new()
-    {
-        { CellType.Empty, Images.Empty },
-        { CellType.Snake, Images.Body },
-        { CellType.Food, Images.Food },
-	};
 
-	private readonly Dictionary<Direction, int> _directionToRotation = new()
-	{
-		{ Direction.Up, 0 },
-		{ Direction.Right, 90 },
-		{ Direction.Down, 180 },
-		{ Direction.Left, 270 },
-	};
+
+
+
+
+
+
+
 
 	public MainWindow()
     {
@@ -129,7 +123,7 @@ public partial class MainWindow : Window
 			for (int column = 0; column < _columns; column++)
 			{
 				var cell = _gameState.Grid[row, column];
-                _gridImages[row, column].Source = _cellToImage[cell];
+                _gridImages[row, column].Source = cell.ToImage();
                 _gridImages[row, column].RenderTransform = Transform.Identity;
 			}
 		}
@@ -141,7 +135,7 @@ public partial class MainWindow : Window
         var image = _gridImages[headPosition.Row, headPosition.Column];
         image.Source = Images.Head;
 
-        var rotation = _directionToRotation[_gameState.Player];
+        var rotation = _gameState.Player.ToRotation();
         image.RenderTransform = new RotateTransform(rotation);
 	}
 

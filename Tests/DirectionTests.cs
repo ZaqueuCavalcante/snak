@@ -98,13 +98,6 @@ public class DirectionTests
         opposite.Should().Be(Direction.Right);
     }
 
-
-
-
-
-
-
-
     [Test]
     public void Should_equals_when_has_same_x_and_y()
     {
