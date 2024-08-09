@@ -24,8 +24,8 @@ public class Direction
 	public override bool Equals(object? obj)
 	{
 		return obj is Direction direction &&
-			   X == direction.X &&
-			   Y == direction.Y;
+			X == direction.X &&
+			Y == direction.Y;
 	}
 
 	public override int GetHashCode()
