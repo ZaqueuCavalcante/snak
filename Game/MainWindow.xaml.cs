@@ -15,15 +15,6 @@ public partial class MainWindow : Window
 
     private bool _gameIsRunning;
 
-
-
-
-
-
-
-
-
-
 	public MainWindow()
     {
         InitializeComponent();
@@ -82,13 +73,13 @@ public partial class MainWindow : Window
         switch (e.Key)
         {
             case Key.Left:
-                _gameState.MoveTo(Direction.Left); break;
+                _gameState.Snake.GoTo(Direction.Left); break;
             case Key.Right:
-                _gameState.MoveTo(Direction.Right); break;
+                _gameState.Snake.GoTo(Direction.Right); break;
             case Key.Up:
-                _gameState.MoveTo(Direction.Up); break;
+                _gameState.Snake.GoTo(Direction.Up); break;
             case Key.Down:
-                _gameState.MoveTo(Direction.Down); break;
+                _gameState.Snake.GoTo(Direction.Down); break;
         }
 	}
 
@@ -132,17 +123,17 @@ public partial class MainWindow : Window
 
 	private void DrawSnakeHead()
 	{
-		var headPosition = _gameState.GetSnakeHead();
+		var headPosition = _gameState.Snake.GetHead();
         var image = _gridImages[headPosition.Row, headPosition.Column];
         image.Source = Images.Head;
 
-        var rotation = _gameState.SnakeDirection.ToRotation();
+        var rotation = _gameState.Snake.HeadDirection.ToRotation();
         image.RenderTransform = new RotateTransform(rotation);
 	}
 
     private async Task DrawDeadSnake()
     {
-        var positions = _gameState.GetSnake().ToList();
+        var positions = _gameState.Snake.CellsPositions.ToList();
 
         for (int i = 0; i < positions.Count; i++)
         {
@@ -152,6 +143,9 @@ public partial class MainWindow : Window
             await Task.Delay(50);
         }
     }
+
+
+
 
 	private async Task ShowCountDown()
     {

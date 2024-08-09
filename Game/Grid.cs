@@ -42,4 +42,9 @@ public class Grid
         }
         return positions;
     }
+
+    public bool IsOutside(Position position)
+    {
+        return position.Row < 0 || position.Row >= _rows || position.Column < 0 || position.Column >= _columns;
+    }
 }
