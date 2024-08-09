@@ -8,4 +8,12 @@
     <TargetFramework>net8.0-windows</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\**" />
+  </ItemGroup>
+
 </Project>
