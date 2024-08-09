@@ -11,7 +11,7 @@ public class Position
 		Column = column;
     }
 
-	public Position Move(Direction direction)
+	public Position MoveTo(Direction direction)
 	{
 		return new(Row + direction.Y, Column + direction.X);
 	}

@@ -120,7 +120,7 @@ public class GameState
             _commands.RemoveFirst();
         }
 
-        var newHeadPosition = GetSnakeHead().Move(Player);
+        var newHeadPosition = GetSnakeHead().MoveTo(Player);
         var targetCell = WillHit(newHeadPosition);
 
         if (targetCell == CellType.Outside || targetCell == CellType.Snake)
