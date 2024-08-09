@@ -7,7 +7,8 @@ namespace Game;
 
 public partial class MainWindow : Window
 {
-    private readonly int _rows = 20, _columns = 20;
+    private readonly int _rows = 20;
+    private readonly int _columns = 20;
     private readonly Image[,] _gridImages;
 
     private GameState _gameState;
@@ -122,7 +123,7 @@ public partial class MainWindow : Window
 		{
 			for (int column = 0; column < _columns; column++)
 			{
-				var cell = _gameState.Grid[row, column];
+				var cell = _gameState.Grid.Get()[row, column];
                 _gridImages[row, column].Source = cell.ToImage();
                 _gridImages[row, column].RenderTransform = Transform.Identity;
 			}
@@ -135,7 +136,7 @@ public partial class MainWindow : Window
         var image = _gridImages[headPosition.Row, headPosition.Column];
         image.Source = Images.Head;
 
-        var rotation = _gameState.Player.ToRotation();
+        var rotation = _gameState.SnakeDirection.ToRotation();
         image.RenderTransform = new RotateTransform(rotation);
 	}
 
