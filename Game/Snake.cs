@@ -1,3 +1,4 @@
+
 namespace Game;
 
 public class Snake
@@ -6,6 +7,15 @@ public class Snake
     public LinkedList<Position> CellsPositions { get; set; } = [];
 	public LinkedList<Direction> Commands { get; set; } = [];
 
+    public void Append(int row, int column)
+    {
+        CellsPositions.AddLast(new Position(row, column));
+    }
+
+    public void MoveTo(Position position)
+    {
+        CellsPositions.AddFirst(position);
+    }
 
     public Position GetHead()
     {
@@ -15,6 +25,11 @@ public class Snake
     public Position GetTail()
     {
         return CellsPositions.Last!.Value;
+    }
+
+    public void DropTail()
+    {
+        CellsPositions.RemoveLast();;
     }
 
     private Direction GetLastDirection()
@@ -38,5 +53,19 @@ public class Snake
         {
             Commands.AddLast(direction);  
         }
+    }
+
+    public void ChangeDirection()
+    {
+        if (Commands.Count > 0)
+        {
+            HeadDirection = Commands.First!.Value;
+            Commands.RemoveFirst();
+        }
+    }
+
+    public Position NextHeadPosition()
+    {
+        return GetHead().MoveTo(HeadDirection);
     }
 }

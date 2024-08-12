@@ -7,6 +7,8 @@ public class Grid
     private readonly CellType[,] _cells;
     private readonly Random _random = new();
 
+    public CellType[,] Get() => _cells;
+
 	public Grid(int rows, int columns)
     {
         _rows = rows;
@@ -14,7 +16,28 @@ public class Grid
         _cells = new CellType[rows, columns];
     }
 
-    public CellType[,] Get() => _cells;
+    private void Put(int row, int column, CellType cellType)
+    {
+        _cells[row, column] = cellType;
+    }
+    private void Put(Position position, CellType cellType)
+    {
+        Put(position.Row, position.Column, cellType);
+    }
+
+    public void PutSnake(Position position)
+    {
+        Put(position, CellType.Snake);
+    }
+    public void PutSnake(int row, int column)
+    {
+        Put(row, column, CellType.Snake);
+    }
+
+    public void PutEmpty(Position position)
+    {
+        Put(position, CellType.Empty);
+    }
 
     public void AddFood()
     {

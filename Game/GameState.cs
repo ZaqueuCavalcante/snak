@@ -26,36 +26,28 @@ public class GameState
         int middleRow = Rows / 2;
         for (int column = 2; column >= 1; column--)
         {
-            Grid.Get()[middleRow, column] = CellType.Snake;
-            Snake.CellsPositions.AddLast(new Position(middleRow, column));
+            Grid.PutSnake(middleRow, column);
+            Snake.Append(middleRow, column);
         }
     }
 
-    private void AddSnakeHead(Position position)
+    private void MoveSnakeHead(Position position)
     {
-        Grid.Get()[position.Row, position.Column] = CellType.Snake;
-        Snake.CellsPositions.AddFirst(position);
+        Grid.PutSnake(position);
+        Snake.MoveTo(position);
     }
 
     private void RemoveSnakeTail()
     {
-        var tailPosition = Snake.GetTail();
-        Grid.Get()[tailPosition.Row, tailPosition.Column] = CellType.Empty;
-        Snake.CellsPositions.RemoveLast();
+        Grid.PutEmpty(Snake.GetTail());
+        Snake.DropTail();
     }
-
-
-
 
     public void MoveSnake()
     {
-        if (Snake.Commands.Count > 0)
-        {
-            Snake.HeadDirection = Snake.Commands.First!.Value;
-            Snake.Commands.RemoveFirst();
-        }
+        Snake.ChangeDirection();
 
-        var newHeadPosition = Snake.GetHead().MoveTo(Snake.HeadDirection);
+        var newHeadPosition = Snake.NextHeadPosition();
         var targetCell = WillHit(newHeadPosition);
 
         if (targetCell == CellType.Outside || targetCell == CellType.Snake)
@@ -67,13 +59,13 @@ public class GameState
         if (targetCell == CellType.Empty)
         {
             RemoveSnakeTail();
-            AddSnakeHead(newHeadPosition);
+            MoveSnakeHead(newHeadPosition);
             return;
         }
 
         if (targetCell == CellType.Food)
         {
-            AddSnakeHead(newHeadPosition);
+            MoveSnakeHead(newHeadPosition);
             Score++;
             Grid.AddFood();
         }
