@@ -16,7 +16,7 @@ public class Snake
         CellsPositions.AddFirst(position);
     }
 
-    public Position GetHead()
+    public Position GetHeadPosition()
     {
         return CellsPositions.First!.Value;
     }
@@ -65,6 +65,6 @@ public class Snake
 
     public Position NextHeadPosition()
     {
-        return GetHead().MoveTo(HeadDirection);
+        return GetHeadPosition().MoveTo(HeadDirection);
     }
 }

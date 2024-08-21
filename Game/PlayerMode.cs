@@ -1,6 +1,6 @@
 namespace Game;
 
-public enum PlayerType
+public enum PlayerMode
 {
     Human = 0,
 

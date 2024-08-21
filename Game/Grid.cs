@@ -6,6 +6,7 @@ public class Grid
     private readonly int _columns;
     private readonly CellType[,] _cells;
     private readonly Random _random = new();
+    private Position _foodPosition;
 
 	public Grid(int rows, int columns)
     {
@@ -14,6 +15,11 @@ public class Grid
         _cells = new CellType[rows, columns];
     }
 
+    public Position GetFoodPosition()
+    {
+        return _foodPosition;
+    }
+    
     public CellType GetCellAt(Position position)
     {
         return _cells[position.Row, position.Column];
@@ -53,8 +59,8 @@ public class Grid
         var total = emptyPositions.Count;
         if (total == 0) return;
 
-        var position = emptyPositions[_random.Next(total)];
-        _cells[position.Row, position.Column] = CellType.Food;
+        _foodPosition = emptyPositions[_random.Next(total)];
+        _cells[_foodPosition.Row, _foodPosition.Column] = CellType.Food;
     }
 
     private List<Position> GetEmptyPositions()

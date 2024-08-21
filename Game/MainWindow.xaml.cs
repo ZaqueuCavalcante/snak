@@ -5,12 +5,13 @@ using System.Windows.Controls;
 
 namespace Game;
 
-public partial class MainWindow : Window
+public partial class MainWindow
 {
     private readonly int _rows = 20;
     private readonly int _columns = 20;
     private readonly Image[,] _gridImages;
     private GameState _game;
+    private PlayerMode _playerMode = PlayerMode.Human;
 
 	public MainWindow()
     {
@@ -57,12 +58,47 @@ public partial class MainWindow : Window
 
     private async Task GameLoop()
     {
-        while (!_game.GameOver)
-        {
-            await Task.Delay(200);
-            _game.MoveSnake();
-            Draw();
-        }
+	    if (_playerMode == PlayerMode.Human)
+	    {
+	        while (!_game.GameOver)
+	        {
+	            await Task.Delay(200);
+	            _game.MoveSnake();
+	            Draw();
+	        }
+	    }
+
+	    if (_playerMode == PlayerMode.DummyIfElse)
+	    {
+		    while (!_game.GameOver)
+		    {
+			    await Task.Delay(100);
+			    
+			    // IF AND ELSE
+			    var headPosition = _game.Snake.GetHeadPosition();
+			    var foodPosition = _game.Grid.GetFoodPosition();
+
+			    if (headPosition.Row < foodPosition.Row)
+			    {
+				    _game.Snake.GoTo(Direction.Down);
+			    }
+			    else if (headPosition.Row > foodPosition.Row)
+			    {
+				    _game.Snake.GoTo(Direction.Up);
+			    }
+			    else if (headPosition.Column < foodPosition.Column)
+			    {
+				    _game.Snake.GoTo(Direction.Right);
+			    }
+			    else if (headPosition.Column > foodPosition.Column)
+			    {
+				    _game.Snake.GoTo(Direction.Left);
+			    }
+			    
+			    _game.MoveSnake();
+			    Draw();
+		    }
+	    }
     }
 
     // EVENTS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -76,6 +112,8 @@ public partial class MainWindow : Window
 
 		if (!_game.IsRunning)
 		{
+			_playerMode = GetPlayerMode(e);
+			
 			_game.IsRunning = true;
 			await RunGame();
 			_game.IsRunning = false;
@@ -84,7 +122,8 @@ public partial class MainWindow : Window
 
 	private void Window_KeyDown(object _, KeyEventArgs e)
 	{
-        if (_game.GameOver) return;
+		if (_game.GameOver) return;
+		if (_playerMode != PlayerMode.Human) return;
 
         switch (e.Key)
         {
@@ -99,6 +138,18 @@ public partial class MainWindow : Window
         }
 	}
 
+	private PlayerMode GetPlayerMode(KeyEventArgs e)
+	{
+		return (e.Key) switch
+		{
+			Key.H => PlayerMode.Human,
+			Key.D => PlayerMode.DummyIfElse,
+			Key.S => PlayerMode.SmartIfElse,
+			Key.N => PlayerMode.NeuralNetwork,
+			_ => PlayerMode.Human
+		};
+	}
+	
     // DRAW - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
     private void Draw()
@@ -123,7 +174,7 @@ public partial class MainWindow : Window
 
 	private void DrawSnakeHead()
 	{
-		var headPosition = _game.Snake.GetHead();
+		var headPosition = _game.Snake.GetHeadPosition();
         var image = _gridImages[headPosition.Row, headPosition.Column];
         image.Source = Images.Head;
 
@@ -145,7 +196,7 @@ public partial class MainWindow : Window
         await DrawDeadSnake();
 		await Task.Delay(1000);
 		Overlay.Visibility = Visibility.Visible;
-        OverlayText.Text = "PRESS ANY KEY TO START";
+        OverlayText.Text = "Human | Dummy";
 	}
 
     private async Task DrawDeadSnake()
