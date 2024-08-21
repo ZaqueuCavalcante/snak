@@ -13,6 +13,6 @@ public class GridTests
         var grid = new Grid(rows, columns);
 
         // Assert
-        grid.Get()[0, 0].Should().Be(CellType.Empty);
+        grid.GetCellAt(0, 0).Should().Be(CellType.Empty);
     }
 }

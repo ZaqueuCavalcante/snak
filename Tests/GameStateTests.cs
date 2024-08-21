@@ -15,8 +15,8 @@ public class GameStateTests
         // Assert
         state.Rows.Should().Be(rows);
         state.Columns.Should().Be(columns);
-        state.Grid.Get()[1, 1].Should().Be(CellType.Snake);
-        state.Grid.Get()[1, 2].Should().Be(CellType.Snake);
+        state.Grid.GetCellAt(1, 1).Should().Be(CellType.Snake);
+        state.Grid.GetCellAt(1, 2).Should().Be(CellType.Snake);
         state.Snake.HeadDirection.Should().Be(Direction.Right);
     }
 }

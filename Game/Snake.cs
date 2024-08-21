@@ -1,4 +1,3 @@
-
 namespace Game;
 
 public class Snake

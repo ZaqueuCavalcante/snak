@@ -7,13 +7,20 @@ public class Grid
     private readonly CellType[,] _cells;
     private readonly Random _random = new();
 
-    public CellType[,] Get() => _cells;
-
 	public Grid(int rows, int columns)
     {
         _rows = rows;
         _columns = columns;
         _cells = new CellType[rows, columns];
+    }
+
+    public CellType GetCellAt(Position position)
+    {
+        return _cells[position.Row, position.Column];
+    }
+    public CellType GetCellAt(int row, int column)
+    {
+        return _cells[row, column];
     }
 
     private void Put(int row, int column, CellType cellType)

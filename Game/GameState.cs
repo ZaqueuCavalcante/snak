@@ -7,6 +7,7 @@ public class GameState
     public Grid Grid { get; }
     public Snake Snake { get; }
 
+    public bool IsRunning { get; set; }
     public int Score { get; private set; }
     public bool GameOver { get; private set; }
 
@@ -77,6 +78,6 @@ public class GameState
 
         if (newHeadPosition == Snake.GetTail()) return CellType.Empty;
 
-        return Grid.Get()[newHeadPosition.Row, newHeadPosition.Column];
+        return Grid.GetCellAt(newHeadPosition);
     }
 }
