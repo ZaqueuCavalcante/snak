@@ -72,28 +72,9 @@ public partial class MainWindow
 	    {
 		    while (!_game.GameOver)
 		    {
-			    await Task.Delay(100);
-			    
-			    // IF AND ELSE
-			    var headPosition = _game.Snake.GetHeadPosition();
-			    var foodPosition = _game.Grid.GetFoodPosition();
+			    await Task.Delay(50);
 
-			    if (headPosition.Row < foodPosition.Row)
-			    {
-				    _game.Snake.GoTo(Direction.Down);
-			    }
-			    else if (headPosition.Row > foodPosition.Row)
-			    {
-				    _game.Snake.GoTo(Direction.Up);
-			    }
-			    else if (headPosition.Column < foodPosition.Column)
-			    {
-				    _game.Snake.GoTo(Direction.Right);
-			    }
-			    else if (headPosition.Column > foodPosition.Column)
-			    {
-				    _game.Snake.GoTo(Direction.Left);
-			    }
+                _game.DummyDecision();
 			    
 			    _game.MoveSnake();
 			    Draw();

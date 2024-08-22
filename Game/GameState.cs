@@ -44,6 +44,133 @@ public class GameState
         Snake.DropTail();
     }
 
+    public void DummyDecision()
+    {
+        var headPosition = Snake.GetHeadPosition();
+        var foodPosition = Grid.GetFoodPosition();
+
+        if (headPosition.Row < foodPosition.Row)
+        {
+            var direction = Direction.Down;
+            var targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Left;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Up;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Right;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+        }
+        else if (headPosition.Row > foodPosition.Row)
+        {
+            var direction = Direction.Up;
+            var targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Right;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Down;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Left;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+        }
+        else if (headPosition.Column < foodPosition.Column)
+        {
+            var direction = Direction.Right;
+            var targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Down;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Left;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Up;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+        }
+        else if (headPosition.Column > foodPosition.Column)
+        {
+            var direction = Direction.Left;
+            var targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Up;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Right;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+
+            direction = Direction.Down;
+            targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell != CellType.Snake && targetCell != CellType.Outside)
+            {
+                Snake.GoTo(direction); return;
+            }
+        }
+    }
+
     public void MoveSnake()
     {
         Snake.ChangeDirection();
