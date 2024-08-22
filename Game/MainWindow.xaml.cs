@@ -7,8 +7,8 @@ namespace Game;
 
 public partial class MainWindow
 {
-    private readonly int _rows = 20;
-    private readonly int _columns = 20;
+    private readonly int _rows = 10;
+    private readonly int _columns = 10;
     private readonly Image[,] _gridImages;
     private GameState _game;
     private PlayerMode _playerMode = PlayerMode.Human;
@@ -73,9 +73,18 @@ public partial class MainWindow
 		    while (!_game.GameOver)
 		    {
 			    await Task.Delay(50);
-
                 _game.DummyDecision();
-			    
+			    _game.MoveSnake();
+			    Draw();
+		    }
+	    }
+
+	    if (_playerMode == PlayerMode.SmartIfElse)
+	    {
+		    while (!_game.GameOver)
+		    {
+			    await Task.Delay(50);
+                _game.SmartDecision();
 			    _game.MoveSnake();
 			    Draw();
 		    }
@@ -177,7 +186,7 @@ public partial class MainWindow
         await DrawDeadSnake();
 		await Task.Delay(1000);
 		Overlay.Visibility = Visibility.Visible;
-        OverlayText.Text = "Human | Dummy";
+        OverlayText.Text = "Human | Dummy | Smart";
 	}
 
     private async Task DrawDeadSnake()

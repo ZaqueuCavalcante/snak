@@ -171,6 +171,13 @@ public class GameState
         }
     }
 
+    public void SmartDecision()
+    {
+        var headPosition = Snake.GetHeadPosition();
+        var direction = headPosition.GetSmartDirection(Rows, Columns);
+        Snake.GoTo(direction);
+    }
+
     public void MoveSnake()
     {
         Snake.ChangeDirection();

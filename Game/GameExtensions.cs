@@ -26,4 +26,33 @@ public static class GameExtensions
     {
         return DirectionToRotation[value];
     }
+
+    public static Direction GetSmartDirection(this Position position, int rows, int columns)
+    {
+        var random = new Random();
+        var boolean = random.Next(2) == 1;
+        var row = position.Row;
+        var column = position.Column;
+
+        if (row % 2 == 0)
+        {
+            if (column % 2 == 0)
+            {
+                if (column == 0) return Direction.Down;
+                return boolean ? Direction.Left : Direction.Down;
+            }
+
+            if (row == 0) return Direction.Left;
+            return boolean ? Direction.Left : Direction.Up;
+        }
+
+        if (column % 2 == 0)
+        {
+            if (row == rows-1) return Direction.Right;
+            return boolean ? Direction.Right : Direction.Down;
+        }
+
+        if (column == columns-1) return Direction.Up;
+        return boolean ? Direction.Up : Direction.Right;
+    }
 }
