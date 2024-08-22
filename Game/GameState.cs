@@ -174,6 +174,9 @@ public class GameState
     public void SmartDecision()
     {
         var headPosition = Snake.GetHeadPosition();
+        var foodPosition = Grid.GetFoodPosition();
+
+        
         var direction = headPosition.GetSmartDirection(Rows, Columns);
         Snake.GoTo(direction);
     }

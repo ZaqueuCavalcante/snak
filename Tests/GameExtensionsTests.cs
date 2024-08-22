@@ -353,7 +353,7 @@ public class GameExtensionsTests
     public void Should_return_smart_direction_on_4x4_cell()
     {
         // Arrange
-        var position = new Position(4, 5);
+        var position = new Position(4, 4);
         // Act
         var direction = position.GetSmartDirection(6, 6);
         // Assert
