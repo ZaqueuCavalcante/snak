@@ -174,11 +174,41 @@ public class GameState
     public void SmartDecision()
     {
         var headPosition = Snake.GetHeadPosition();
-        var foodPosition = Grid.GetFoodPosition();
+        var directions = headPosition.GetSmartDirection(Rows, Columns);
+        if (directions.Count == 1)
+        {
+            Snake.GoTo(directions[0]); return;
+        }
 
+        var firstPosition = headPosition.MoveTo(directions[0]);
+        var secondPosition = headPosition.MoveTo(directions[1]);
+
+        var firstTargetCell = WillHit(firstPosition);
+        if (firstTargetCell == CellType.Snake)
+        {
+            Snake.GoTo(directions[1]); return;
+        }
+        var secondTargetCell = WillHit(secondPosition);
+        if (secondTargetCell == CellType.Snake)
+        {
+            Snake.GoTo(directions[0]); return;
+        }
         
-        var direction = headPosition.GetSmartDirection(Rows, Columns);
-        Snake.GoTo(direction);
+        var foodPosition = Grid.GetFoodPosition();
+        var firstDistance = Distance.Manhattan(firstPosition, foodPosition);
+        var secondDistance = Distance.Manhattan(secondPosition, foodPosition);
+
+        if (firstDistance < secondDistance)
+        {
+            Snake.GoTo(directions[0]); return;
+        }
+        if (secondDistance < firstDistance)
+        {
+            Snake.GoTo(directions[1]); return;
+        }
+
+        var random = new Random();
+        Snake.GoTo(directions[random.Next(2)]);
     }
 
     public void MoveSnake()

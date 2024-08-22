@@ -7,8 +7,8 @@ namespace Game;
 
 public partial class MainWindow
 {
-    private readonly int _rows = 10;
-    private readonly int _columns = 10;
+    private readonly int _rows = 20;
+    private readonly int _columns = 20;
     private readonly Image[,] _gridImages;
     private GameState _game;
     private PlayerMode _playerMode = PlayerMode.Human;
