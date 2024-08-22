@@ -9,6 +9,7 @@ public class GameState
 
     public bool IsRunning { get; set; }
     public int Score { get; private set; }
+    public int Steps { get; private set; }
     public bool GameOver { get; private set; }
 
 	public GameState(int rows, int columns)
@@ -214,6 +215,7 @@ public class GameState
     public void MoveSnake()
     {
         Snake.ChangeDirection();
+        Steps++;
 
         var newHeadPosition = Snake.NextHeadPosition();
         var targetCell = WillHit(newHeadPosition);

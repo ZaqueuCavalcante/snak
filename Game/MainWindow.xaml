@@ -30,7 +30,7 @@
                 x:Name="ScoreText"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Text="SCORE 0"
+                Text="SCORE = 0 | STEPS = 0"
                 FontSize="22"
                 Margin="0 20"
             />
