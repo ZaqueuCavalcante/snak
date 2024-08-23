@@ -194,10 +194,10 @@ public class GameState
         {
             Snake.GoTo(directions[0]); return;
         }
-        
+
         var foodPosition = Grid.GetFoodPosition();
-        var firstDistance = Distance.Manhattan(firstPosition, foodPosition);
-        var secondDistance = Distance.Manhattan(secondPosition, foodPosition);
+        var firstDistance = Distance.Euclidian(firstPosition, foodPosition);
+        var secondDistance = Distance.Euclidian(secondPosition, foodPosition);
 
         if (firstDistance < secondDistance)
         {

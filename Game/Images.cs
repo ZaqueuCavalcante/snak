@@ -5,12 +5,12 @@ namespace Game;
 
 public static class Images
 {
-    public readonly static ImageSource Empty = LoadPng(nameof(Empty));
-    public readonly static ImageSource Body = LoadPng(nameof(Body));
-    public readonly static ImageSource Head = LoadPng(nameof(Head));
-    public readonly static ImageSource Food = LoadPng(nameof(Food));
-    public readonly static ImageSource DeadBody = LoadPng(nameof(DeadBody));
-    public readonly static ImageSource DeadHead = LoadPng(nameof(DeadHead));
+    public static readonly ImageSource Empty = LoadPng(nameof(Empty));
+    public static readonly ImageSource Body = LoadPng(nameof(Body));
+    public static readonly ImageSource Head = LoadPng(nameof(Head));
+    public static readonly ImageSource Food = LoadPng(nameof(Food));
+    public static readonly ImageSource DeadBody = LoadPng(nameof(DeadBody));
+    public static readonly ImageSource DeadHead = LoadPng(nameof(DeadHead));
 
 	private static BitmapImage LoadPng(string fileName)
 	{
