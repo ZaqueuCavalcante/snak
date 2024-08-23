@@ -52,15 +52,17 @@ public class Grid
         Put(position, CellType.Empty);
     }
 
-    public void AddFood()
+    public int AddFood()
     {
         var emptyPositions = GetEmptyPositions();
 
         var total = emptyPositions.Count;
-        if (total == 0) return;
+        if (total == 0) return 0;
 
         _foodPosition = emptyPositions[_random.Next(total)];
         _cells[_foodPosition.Row, _foodPosition.Column] = CellType.Food;
+
+        return total;
     }
 
     private List<Position> GetEmptyPositions()

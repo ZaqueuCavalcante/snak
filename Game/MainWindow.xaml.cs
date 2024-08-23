@@ -7,8 +7,8 @@ namespace Game;
 
 public partial class MainWindow
 {
-    private readonly int _rows = 20;
-    private readonly int _columns = 20;
+    private readonly int _rows = 8;
+    private readonly int _columns = 8;
     private readonly Image[,] _gridImages;
     private GameState _game;
     private PlayerMode _playerMode = PlayerMode.Human;
@@ -52,7 +52,14 @@ public partial class MainWindow
 
         await GameLoop();
 
-        await DrawGameOver();
+        if (_game.GameOver)
+        {
+			await DrawGameOver();
+        }
+        if (_game.Zerou)
+        {
+	        await DrawZerou();
+        }
 		_game = new GameState(_rows, _columns);
 	}
 
@@ -60,7 +67,7 @@ public partial class MainWindow
     {
 	    if (_playerMode == PlayerMode.Human)
 	    {
-	        while (!_game.GameOver)
+	        while (!_game.GameOver & !_game.Zerou)
 	        {
 	            await Task.Delay(200);
 	            _game.MoveSnake();
@@ -70,7 +77,7 @@ public partial class MainWindow
 
 	    if (_playerMode == PlayerMode.DummyIfElse)
 	    {
-		    while (!_game.GameOver)
+		    while (!_game.GameOver & !_game.Zerou)
 		    {
 			    await Task.Delay(50);
                 _game.DummyDecision();
@@ -81,7 +88,7 @@ public partial class MainWindow
 
 	    if (_playerMode == PlayerMode.SmartIfElse)
 	    {
-		    while (!_game.GameOver)
+		    while (!_game.GameOver & !_game.Zerou)
 		    {
 			    await Task.Delay(50);
                 _game.SmartDecision();
@@ -146,6 +153,7 @@ public partial class MainWindow
     {
         DrawGrid();
         DrawSnakeHead();
+        DrawSnakeTail();
 		ScoreText.Text = $"SCORE = {_game.Score} | STEPS = {_game.Steps}";
     }
 
@@ -172,6 +180,13 @@ public partial class MainWindow
         image.RenderTransform = new RotateTransform(rotation);
 	}
 
+	private void DrawSnakeTail()
+	{
+		var tailPosition = _game.Snake.GetTailPosition();
+		var image = _gridImages[tailPosition.Row, tailPosition.Column];
+		image.Source = Images.Tail;
+	}
+
 	private async Task DrawCountDown()
     {
         for (int i = 3; i >= 1; i--)
@@ -189,6 +204,13 @@ public partial class MainWindow
         OverlayText.Text = "Human | Dummy | Smart";
 	}
 
+	private async Task DrawZerou()
+	{
+		await Task.Delay(1000);
+		Overlay.Visibility = Visibility.Visible;
+		OverlayText.Text = "🐍 ZEROU 🐍";
+	}
+	
     private async Task DrawDeadSnake()
     {
         var positions = _game.Snake.CellsPositions.ToList();

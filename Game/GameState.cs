@@ -11,6 +11,7 @@ public class GameState
     public int Score { get; private set; }
     public int Steps { get; private set; }
     public bool GameOver { get; private set; }
+    public bool Zerou { get; private set; }
 
 	public GameState(int rows, int columns)
     {
@@ -41,7 +42,7 @@ public class GameState
 
     private void RemoveSnakeTail()
     {
-        Grid.PutEmpty(Snake.GetTail());
+        Grid.PutEmpty(Snake.GetTailPosition());
         Snake.DropTail();
     }
 
@@ -237,7 +238,7 @@ public class GameState
         {
             MoveSnakeHead(newHeadPosition);
             Score++;
-            Grid.AddFood();
+            Zerou = Grid.AddFood() == 0;
         }
     }
 
@@ -245,7 +246,7 @@ public class GameState
     {
         if (Grid.IsOutside(newHeadPosition)) return CellType.Outside;
 
-        if (newHeadPosition == Snake.GetTail()) return CellType.Empty;
+        if (newHeadPosition == Snake.GetTailPosition()) return CellType.Empty;
 
         return Grid.GetCellAt(newHeadPosition);
     }

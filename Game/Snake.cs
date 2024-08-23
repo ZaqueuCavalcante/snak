@@ -21,7 +21,7 @@ public class Snake
         return CellsPositions.First!.Value;
     }
 
-    public Position GetTail()
+    public Position GetTailPosition()
     {
         return CellsPositions.Last!.Value;
     }
