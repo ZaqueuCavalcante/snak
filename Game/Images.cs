@@ -12,6 +12,7 @@ public static class Images
     public static readonly ImageSource Tail = LoadPng(nameof(Tail));
     public static readonly ImageSource DeadHead = LoadPng(nameof(DeadHead));
     public static readonly ImageSource DeadBody = LoadPng(nameof(DeadBody));
+    public readonly static ImageSource Rock = LoadPng(nameof(Rock));
 
 	private static BitmapImage LoadPng(string fileName)
 	{
