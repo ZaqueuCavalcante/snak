@@ -151,6 +151,9 @@ public partial class MainWindow
 
 	private void DrawGrid()
     {
+		// Valor deve ir de 1.0 -> 2.0
+		// Cada celula da cobra deve receber um valor menor na ordem correta
+		// Dado row e column, pegar o index da cobra, dae definir a opacidade
 		for (int row = 0; row < _rows; row++)
 		{
 			for (int column = 0; column < _columns; column++)
@@ -158,6 +161,7 @@ public partial class MainWindow
 				var cell = _game.Grid.GetCellAt(row, column);
                 _gridImages[row, column].Source = cell.ToImage();
                 _gridImages[row, column].RenderTransform = Transform.Identity;
+                // _gridImages[row, column].Opacity = 0.2;
 			}
 		}
 	}
