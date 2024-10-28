@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Collections.Immutable;
 
 namespace Game;
 
@@ -151,9 +152,13 @@ public partial class MainWindow
 
 	private void DrawGrid()
     {
-		// Valor deve ir de 1.0 -> 2.0
-		// Cada celula da cobra deve receber um valor menor na ordem correta
-		// Dado row e column, pegar o index da cobra, dae definir a opacidade
+		var opct = 1.0;
+		var cells = _game.Snake.CellsPositions.ToList().ConvertAll(x =>
+		{
+			opct -= 0.007;
+			return new { x.Row, x.Column, Opacity = opct };
+		});
+
 		for (int row = 0; row < _rows; row++)
 		{
 			for (int column = 0; column < _columns; column++)
@@ -161,7 +166,9 @@ public partial class MainWindow
 				var cell = _game.Grid.GetCellAt(row, column);
                 _gridImages[row, column].Source = cell.ToImage();
                 _gridImages[row, column].RenderTransform = Transform.Identity;
-                // _gridImages[row, column].Opacity = 0.2;
+
+				var position = cells.FirstOrDefault(x => x.Row == row && x.Column == column);
+                _gridImages[row, column].Opacity = position != null ? position.Opacity : 1.0;
 			}
 		}
 	}
