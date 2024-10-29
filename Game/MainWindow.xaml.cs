@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Controls;
-using System.Collections.Immutable;
 
 namespace Game;
 
@@ -86,6 +85,17 @@ public partial class MainWindow
 		    {
 			    await Task.Delay(50);
                 _game.SmartDecision();
+			    _game.MoveSnake();
+			    Draw();
+		    }
+	    }
+
+	    if (_playerMode == PlayerMode.NeuralNetwork)
+	    {
+		    while (!_game.GameOver)
+		    {
+			    await Task.Delay(50);
+                _game.NeuralNetworkDecision();
 			    _game.MoveSnake();
 			    Draw();
 		    }
@@ -197,7 +207,7 @@ public partial class MainWindow
         await DrawDeadSnake();
 		await Task.Delay(1000);
 		Overlay.Visibility = Visibility.Visible;
-        OverlayText.Text = "Human | Dummy | Smart";
+        OverlayText.Text = "Human | Dummy | Smart | Neural";
 	}
 
     private async Task DrawDeadSnake()

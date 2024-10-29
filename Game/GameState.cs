@@ -196,8 +196,8 @@ public class GameState
         }
         
         var foodPosition = Grid.GetFoodPosition();
-        var firstDistance = Distance.Manhattan(firstPosition, foodPosition);
-        var secondDistance = Distance.Manhattan(secondPosition, foodPosition);
+        var firstDistance = SnakExtensions.Manhattan(firstPosition, foodPosition);
+        var secondDistance = SnakExtensions.Manhattan(secondPosition, foodPosition);
 
         if (firstDistance < secondDistance)
         {
@@ -211,6 +211,15 @@ public class GameState
         var random = new Random();
         Snake.GoTo(directions[random.Next(2)]);
     }
+
+
+
+    public void NeuralNetworkDecision()
+    {
+        
+    }
+
+
 
     public void MoveSnake()
     {
