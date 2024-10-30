@@ -28,7 +28,7 @@ public class Snake
 
     public void DropTail()
     {
-        CellsPositions.RemoveLast();;
+        CellsPositions.RemoveLast();
     }
 
     private Direction GetLastDirection()

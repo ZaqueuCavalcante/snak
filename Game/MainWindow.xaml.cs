@@ -69,7 +69,8 @@ public partial class MainWindow
 	    {
 	        while (!_game.GameOver & !_game.Zerou)
 	        {
-	            await Task.Delay(200);
+				_game.NeuralNetworkDecision();
+	            await Task.Delay(1000);
 	            _game.MoveSnake();
 	            Draw();
 	        }
@@ -92,6 +93,17 @@ public partial class MainWindow
 		    {
 			    await Task.Delay(50);
                 _game.SmartDecision();
+			    _game.MoveSnake();
+			    Draw();
+		    }
+	    }
+
+	    if (_playerMode == PlayerMode.NeuralNetwork)
+	    {
+		    while (!_game.GameOver)
+		    {
+			    await Task.Delay(50);
+                _game.NeuralNetworkDecision();
 			    _game.MoveSnake();
 			    Draw();
 		    }
@@ -135,9 +147,9 @@ public partial class MainWindow
         }
 	}
 
-	private PlayerMode GetPlayerMode(KeyEventArgs e)
+	private static PlayerMode GetPlayerMode(KeyEventArgs e)
 	{
-		return (e.Key) switch
+		return e.Key switch
 		{
 			Key.H => PlayerMode.Human,
 			Key.D => PlayerMode.DummyIfElse,
@@ -159,6 +171,13 @@ public partial class MainWindow
 
 	private void DrawGrid()
     {
+		var opct = 1.0;
+		var cells = _game.Snake.CellsPositions.ToList().ConvertAll(x =>
+		{
+			opct -= 0.007;
+			return new { x.Row, x.Column, Opacity = opct };
+		});
+
 		for (int row = 0; row < _rows; row++)
 		{
 			for (int column = 0; column < _columns; column++)
@@ -166,6 +185,9 @@ public partial class MainWindow
 				var cell = _game.Grid.GetCellAt(row, column);
                 _gridImages[row, column].Source = cell.ToImage();
                 _gridImages[row, column].RenderTransform = Transform.Identity;
+
+				var position = cells.FirstOrDefault(x => x.Row == row && x.Column == column);
+                _gridImages[row, column].Opacity = position != null ? position.Opacity : 1.0;
 			}
 		}
 	}
@@ -201,7 +223,7 @@ public partial class MainWindow
         await DrawDeadSnake();
 		await Task.Delay(1000);
 		Overlay.Visibility = Visibility.Visible;
-        OverlayText.Text = "Human | Dummy | Smart";
+        OverlayText.Text = "Human | Dummy | Smart | Neural";
 	}
 
 	private async Task DrawZerou()

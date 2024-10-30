@@ -6,7 +6,7 @@ public class Grid
     private readonly int _columns;
     private readonly CellType[,] _cells;
     private readonly Random _random = new();
-    private Position _foodPosition;
+    private Position _foodPosition = null!;
 
 	public Grid(int rows, int columns)
     {
