@@ -216,7 +216,12 @@ public class GameState
 
     public void NeuralNetworkDecision()
     {
-        
+        var headPosition = Snake.GetHeadPosition();
+        var foodPosition = Grid.GetFoodPosition();
+
+        var angle = SnakExtensions.AbsoluteAngle(headPosition, foodPosition);
+
+        Console.WriteLine(angle);
     }
 
 

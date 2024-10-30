@@ -62,7 +62,8 @@ public partial class MainWindow
 	    {
 	        while (!_game.GameOver)
 	        {
-	            await Task.Delay(200);
+				_game.NeuralNetworkDecision();
+	            await Task.Delay(1000);
 	            _game.MoveSnake();
 	            Draw();
 	        }
@@ -139,9 +140,9 @@ public partial class MainWindow
         }
 	}
 
-	private PlayerMode GetPlayerMode(KeyEventArgs e)
+	private static PlayerMode GetPlayerMode(KeyEventArgs e)
 	{
-		return (e.Key) switch
+		return e.Key switch
 		{
 			Key.H => PlayerMode.Human,
 			Key.D => PlayerMode.DummyIfElse,
