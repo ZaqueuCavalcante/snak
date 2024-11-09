@@ -19,4 +19,10 @@ public class GameStateTests
         state.Grid.GetCellAt(1, 2).Should().Be(CellType.Snake);
         state.Snake.HeadDirection.Should().Be(Direction.Right);
     }
+
+    [Test]
+    public void Trainer()
+    {
+        SnakTrainer.Run();
+    }
 }

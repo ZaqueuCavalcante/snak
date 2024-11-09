@@ -7,8 +7,8 @@ namespace Game;
 
 public partial class MainWindow
 {
-    private readonly int _rows = 8;
-    private readonly int _columns = 8;
+    private readonly int _rows = 10;
+    private readonly int _columns = 10;
     private readonly Image[,] _gridImages;
     private GameState _game;
     private PlayerMode _playerMode = PlayerMode.Human;
@@ -99,9 +99,9 @@ public partial class MainWindow
 
 	    if (_playerMode == PlayerMode.NeuralNetwork)
 	    {
-		    while (!_game.GameOver)
+		    while (!_game.GameOver & !_game.Zerou)
 		    {
-			    await Task.Delay(1000);
+			    await Task.Delay(100);
                 _game.NeuralNetworkDecision();
 			    _game.MoveSnake();
 			    Draw();

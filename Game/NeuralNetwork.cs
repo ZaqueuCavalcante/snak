@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Game;
 
 public class NeuralNetwork
@@ -44,5 +42,32 @@ public class NeuralNetwork
             2 => Direction.Left,
             _ => Direction.Up,
         };
+    }
+
+    public static NeuralNetwork NewRandom()
+    {
+        var random = new Random();
+        double Next()
+        {
+            return random.NextDouble() * 2000 - 1000;
+        }
+
+        double[][] intermediateNeurons =
+        [
+            [Next(), Next(), Next()],
+            [Next(), Next(), Next()],
+            [Next(), Next(), Next()],
+            [Next(), Next(), Next()],
+            [Next(), Next(), Next()],
+        ];
+        double[][] outputNeurons =
+        [
+            [Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next()],
+        ];
+
+        return new NeuralNetwork(intermediateNeurons, outputNeurons);
     }
 }
