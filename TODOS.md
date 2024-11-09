@@ -1,3 +1,16 @@
+- Se mandar pra morte, ir pro proximo direction
+- Remover o aumento do corpo, pra mostrar que ela aprendeu o basico
+- Adicionar o bias
+- Dar mais informacoes de input (porcentagem de ocupacao de quadrante)
+- Variar tamanho da camada intermediaria
+- Adicionar mais camadas
+- Ler artigos sobre
+- Montar slides e animacoes
+
+
+
+
+
 [-297.0830254774801, -694.6333103675022, -914.7228022272527],
 [319.0434706151102, 138.12778608651502, 845.2635421496104],
 [775.823777547776, 777.1921359611354, 93.09790028447651],

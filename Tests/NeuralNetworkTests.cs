@@ -6,14 +6,31 @@ public class NeuralNetworkTests
     public void Should_calculate_correct_direction_when_all_weights_are_zero()
     {
         // Arrange
-        var neuralNetwork = new NeuralNetwork([], []);
+        double[][] intermediateNeurons =
+        [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+        ];
+
+        double[][] outputNeurons =
+        [
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+        ];
+
+        var neuralNetwork = new NeuralNetwork(intermediateNeurons, outputNeurons);
         double[] inputs = [0.50, -0.36, 0.89];
 
         // Act
         var direction = neuralNetwork.Calculate(inputs);
 
         // Assert
-        direction.Should().Be(Direction.Right);
+        direction.Should().BeEquivalentTo([Direction.Right, Direction.Down, Direction.Left, Direction.Up]);
     }
 
     [Test]
@@ -44,6 +61,6 @@ public class NeuralNetworkTests
         var direction = neuralNetwork.Calculate(inputs);
 
         // Assert
-        direction.Should().Be(Direction.Right);
+        direction.Should().BeEquivalentTo([Direction.Right, Direction.Down, Direction.Left, Direction.Up]);
     }
 }

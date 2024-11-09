@@ -13,7 +13,7 @@ public class GameState
     public bool GameOver { get; private set; }
     public bool Zerou { get; private set; }
 
-    public NeuralNetwork NeuralNetwork { get; private set; }
+    public NeuralNetwork NeuralNetwork { get; set; }
 
 	public GameState(int rows, int columns)
     {
@@ -25,24 +25,7 @@ public class GameState
         AddSnake();
         Grid.AddFood();
 
-        // Pegar os pesos de um arquivo?
-        double[][] intermediateNeurons =
-        [
-            [-297.0830254774801, -694.6333103675022, -914.7228022272527],
-            [319.0434706151102, 138.12778608651502, 845.2635421496104],
-            [775.823777547776, 777.1921359611354, 93.09790028447651],
-            [762.0135445719052, 464.67303635762846, 356.1230114112318],
-            [-568.3439613556116, 619.0517535048862, -759.9628284481839],
-        ];
-        double[][] outputNeurons =
-        [
-            [-451.76115780693135, 45.440905099145766, 705.0478368701818, -888.4022816894761, -870.593761998947],
-            [-884.1789508019677, -872.1655248425088, 730.6145387228539, 385.90745137822796, 499.60566719590815],
-            [659.4054386758462, 355.328029300337, 927.8301937302774, -487.0529442847711, 999.5042412898849],
-            [993.783224198075, 144.92184660718294, -15.87803568691038, -131.0726111249063, -26.14016853971134],
-        ];
-        NeuralNetwork = new NeuralNetwork(intermediateNeurons, outputNeurons);
-        // NeuralNetwork = NeuralNetwork.NewRandom();
+        NeuralNetwork = NeuralNetwork.NewRandom();
     }
 
     private void AddSnake()
@@ -241,15 +224,24 @@ public class GameState
         var headPosition = Snake.GetHeadPosition();
         var foodPosition = Grid.GetFoodPosition();
 
-        var absoluteDirection = Snake.GetHeadDirection().Absolute();
+        var velX = Snake.GetHeadDirection().VelX();
+        var velY = Snake.GetHeadDirection().VelY();
         var absoluteDeltaRow = SnakExtensions.AbsoluteDeltaRow(headPosition, foodPosition, Rows);
         var absoluteDeltaColumn = SnakExtensions.AbsoluteDeltaColumn(headPosition, foodPosition, Columns);
         
-        double[] inputs = [absoluteDirection, absoluteDeltaRow, absoluteDeltaColumn];
+        double[] inputs = [velX, velY, absoluteDeltaRow, absoluteDeltaColumn];
 
-        var direction = NeuralNetwork.Calculate(inputs);
-        
-        Snake.GoTo(direction);
+        var directions = NeuralNetwork.Calculate(inputs);
+
+        foreach (var direction in directions)
+        {
+            var targetCell = WillHit(headPosition.MoveTo(direction));
+            if (targetCell == CellType.Empty || targetCell == CellType.Food)
+            {
+                Snake.GoTo(direction);
+                break;
+            }
+        }
     }
 
 
@@ -287,7 +279,10 @@ public class GameState
     {
         if (Grid.IsOutside(newHeadPosition)) return CellType.Outside;
 
-        if (newHeadPosition == Snake.GetTailPosition()) return CellType.Empty;
+        if (newHeadPosition == Snake.GetTailPosition())
+        {
+            return Snake.Size() > 2 ? CellType.Empty : CellType.Snake;
+        }
 
         return Grid.GetCellAt(newHeadPosition);
     }

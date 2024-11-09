@@ -90,7 +90,7 @@ public partial class MainWindow
 	    {
 		    while (!_game.GameOver & !_game.Zerou)
 		    {
-			    await Task.Delay(50);
+			    await Task.Delay(40);
                 _game.SmartDecision();
 			    _game.MoveSnake();
 			    Draw();
@@ -99,9 +99,28 @@ public partial class MainWindow
 
 	    if (_playerMode == PlayerMode.NeuralNetwork)
 	    {
+			// TODO: Load from file.json
+
+			double[][] intermediateNeurons =
+			[
+				[647.1257956479974, 308.79247064864353, -964.088682834465, 448.5819973155162],
+				[206.12356307138134, -373.37436667496956, 944.6706648645686, 84.46286955468486],
+				[698.5988924190358, -330.92481297133645, 410.44223653738345, 319.09571845921096],
+				[14.065415059686188, 322.85393209439144, 177.62364013128808, -214.69676859088497],
+				[443.621041444316, 200.93796855891742, 629.8000672124567, 351.4683123566715]
+			];
+			double[][] outputNeurons =
+			[
+				[4.542733189163641, 418.073182259227, -965.8456997237048, 277.61452999482117, -200.6333323033018],
+				[367.6347631218873, 784.4795895997011, 166.8539023587989, -550.7754583527999, -486.65423170137285],
+				[983.8194571152667, -7.4472816465163305, -442.53291898345265, -805.375267910304, 154.9729844326696],
+				[137.8439746449169, -90.70240711591953, -177.49553612684883, -897.9639887747009, -572.3711610031372]
+			];
+			_game.NeuralNetwork = new NeuralNetwork(intermediateNeurons, outputNeurons);
+
 		    while (!_game.GameOver & !_game.Zerou)
 		    {
-			    await Task.Delay(100);
+			    await Task.Delay(40);
                 _game.NeuralNetworkDecision();
 			    _game.MoveSnake();
 			    Draw();

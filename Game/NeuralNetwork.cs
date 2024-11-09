@@ -6,42 +6,44 @@ public class NeuralNetwork
     public double[][] IntermediateNeurons { get; }
     public double[][] OutputNeurons { get; }
 
-    public double[] IntermediateOutput { get; }
-    public double[] FinalOutput { get; }
+    public int Score { get; set; }
+
+    public double[] _intermediateOutput { get; }
+    public double[] _finalOutput { get; }
 
     public NeuralNetwork(double[][] intermediateNeurons, double[][] outputNeurons)
     {
         IntermediateNeurons = intermediateNeurons;
         OutputNeurons = outputNeurons;
-        IntermediateOutput = new double[IntermediateNeurons.GetUpperBound(0)+1];
-        FinalOutput = new double[OutputNeurons.GetUpperBound(0)+1];;
+        _intermediateOutput = new double[IntermediateNeurons.GetUpperBound(0)+1];
+        _finalOutput = new double[OutputNeurons.GetUpperBound(0)+1];;
     }
 
-    public Direction Calculate(double[] inputs)
+    public Direction[] Calculate(double[] inputs)
     {
         var intermediateMaxValue = inputs.Length * 1000d;
         for (int neuron = 0; neuron <= IntermediateNeurons.GetUpperBound(0); neuron++)
         {
             var value = SnakExtensions.Multiply(inputs, IntermediateNeurons[neuron]);
-            IntermediateOutput[neuron] = value / intermediateMaxValue;
+            _intermediateOutput[neuron] = value / intermediateMaxValue;
         }
 
-        var outputMaxValue = IntermediateOutput.Length * 1000d;
+        var outputMaxValue = _intermediateOutput.Length * 1000d;
         for (int neuron = 0; neuron <= OutputNeurons.GetUpperBound(0); neuron++)
         {
-            var value = SnakExtensions.Multiply(IntermediateOutput, OutputNeurons[neuron]);
-            FinalOutput[neuron] = value / outputMaxValue;
+            var value = SnakExtensions.Multiply(_intermediateOutput, OutputNeurons[neuron]);
+            _finalOutput[neuron] = value / outputMaxValue;
         }
 
-        int maxIndex = FinalOutput.Length > 0 ? FinalOutput.ToList().IndexOf(FinalOutput.Max()) : 0;
-
-        return maxIndex switch
+        var outputs = new List<NNOutput>
         {
-            0 => Direction.Right,
-            1 => Direction.Down,
-            2 => Direction.Left,
-            _ => Direction.Up,
+            new() { Direction = Direction.Right, Value = Math.Abs(_finalOutput[0]) },
+            new() { Direction = Direction.Down, Value = Math.Abs(_finalOutput[1]) },
+            new() { Direction = Direction.Left, Value = Math.Abs(_finalOutput[2]) },
+            new() { Direction = Direction.Up, Value = Math.Abs(_finalOutput[3]) },
         };
+
+        return outputs.OrderByDescending(x => x.Value).Select(x => x.Direction).ToArray();
     }
 
     public static NeuralNetwork NewRandom()
@@ -54,11 +56,11 @@ public class NeuralNetwork
 
         double[][] intermediateNeurons =
         [
-            [Next(), Next(), Next()],
-            [Next(), Next(), Next()],
-            [Next(), Next(), Next()],
-            [Next(), Next(), Next()],
-            [Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next()],
         ];
         double[][] outputNeurons =
         [
@@ -70,4 +72,10 @@ public class NeuralNetwork
 
         return new NeuralNetwork(intermediateNeurons, outputNeurons);
     }
+}
+
+public class NNOutput
+{
+    public double Value { get; set; }
+    public Direction Direction { get; set; }
 }

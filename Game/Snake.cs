@@ -43,13 +43,18 @@ public class Snake
         return Commands.Last!.Value;
     }
 
-	public bool CanChangeDirection(Direction newDirection)
+	private bool CanChangeDirection(Direction newDirection)
 	{
 		if (Commands.Count == 2) return false;
 
         var lastDirection = GetLastDirection();
 		return newDirection != lastDirection && newDirection != lastDirection.Opposite();
 	}
+
+    public int Size()
+    {
+        return CellsPositions.Count;
+    }
 
 	public void GoTo(Direction direction)
     {
