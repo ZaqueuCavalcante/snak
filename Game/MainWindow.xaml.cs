@@ -69,7 +69,6 @@ public partial class MainWindow
 	    {
 	        while (!_game.GameOver & !_game.Zerou)
 	        {
-				_game.NeuralNetworkDecision();
 	            await Task.Delay(1000);
 	            _game.MoveSnake();
 	            Draw();
@@ -102,7 +101,7 @@ public partial class MainWindow
 	    {
 		    while (!_game.GameOver)
 		    {
-			    await Task.Delay(50);
+			    await Task.Delay(1000);
                 _game.NeuralNetworkDecision();
 			    _game.MoveSnake();
 			    Draw();
@@ -165,7 +164,6 @@ public partial class MainWindow
     {
         DrawGrid();
         DrawSnakeHead();
-        DrawSnakeTail();
 		ScoreText.Text = $"SCORE = {_game.Score} | STEPS = {_game.Steps}";
     }
 
@@ -187,7 +185,7 @@ public partial class MainWindow
                 _gridImages[row, column].RenderTransform = Transform.Identity;
 
 				var position = cells.FirstOrDefault(x => x.Row == row && x.Column == column);
-                _gridImages[row, column].Opacity = position != null ? position.Opacity : 1.0;
+                _gridImages[row, column].Opacity = position?.Opacity ?? 1.0;
 			}
 		}
 	}
@@ -200,13 +198,6 @@ public partial class MainWindow
 
         var rotation = _game.Snake.HeadDirection.ToRotation();
         image.RenderTransform = new RotateTransform(rotation);
-	}
-
-	private void DrawSnakeTail()
-	{
-		var tailPosition = _game.Snake.GetTailPosition();
-		var image = _gridImages[tailPosition.Row, tailPosition.Column];
-		image.Source = Images.Tail;
 	}
 
 	private async Task DrawCountDown()
@@ -231,8 +222,10 @@ public partial class MainWindow
 		await Task.Delay(1000);
 		Overlay.Visibility = Visibility.Visible;
 		OverlayText.Text = "🐍 ZEROU 🐍";
+		await Task.Delay(2000);
+		OverlayText.Text = "Human | Dummy | Smart | Neural";
 	}
-	
+
     private async Task DrawDeadSnake()
     {
         var positions = _game.Snake.CellsPositions.ToList();

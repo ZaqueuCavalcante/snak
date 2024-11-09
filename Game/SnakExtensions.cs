@@ -2,64 +2,99 @@ namespace Game;
 
 public static class SnakExtensions
 {
-   public static double Manhattan(Position a, Position b)
+   public static double Multiply(double[] a, double[] b)
    {
-      return Math.Abs(a.Row - b.Row) + Math.Abs(a.Column - b.Column);
+      var value = 0d;
+      for (int i = 0; i < a.Length; i++)
+      {
+         value += a[i] * b[i];
+      }
+      return value;
    }
 
-   public static double AbsoluteAngle(Position a, Position b)
+   public static double Absolute(this Direction direction)
    {
-      if (b.Row == a.Row)
-      {
-         return b.Column >= a.Column ? 0.000 : 0.500;
-      }
+      if (direction == Direction.Right) return 0.50;
+      if (direction == Direction.Down) return 1.00;
+      if (direction == Direction.Left) return -0.50;
+      return -1.00;
+   }
 
-      if (b.Column == a.Column)
-      {
-         return b.Row >= a.Row ? 0.250 : 0.750;
-      }
+   public static double AbsoluteDeltaRow(Position a, Position b, int rows)
+   {
+      return (b.Row - a.Row) / (double)rows;
+   }
 
-      if (b.Row > a.Row && b.Column > a.Column)
-      {
-         return 0.125;
-      }
-
-      if (b.Row > a.Row && b.Column < a.Column)
-      {
-         return 0.375;
-      }
-
-      if (b.Row < a.Row && b.Column < a.Column)
-      {
-         return 0.625;
-      }
-
-      if (b.Row < a.Row && b.Column > a.Column)
-      {
-         return 0.875;
-      }
-
-      return -1000_000;
+   public static double AbsoluteDeltaColumn(Position a, Position b, int columns)
+   {
+      return (b.Column - a.Column) / (double)columns;
    }
 }
 
 public static class TestData
 {
-   public static IEnumerable<object[]> Angles()
+   public static IEnumerable<object[]> Directions()
+   {
+      foreach (var value in new List<(Direction, double)>()
+      {
+         (Direction.Right, 0.50),
+         (Direction.Down, 1.00),
+         (Direction.Left, -0.50),
+         (Direction.Up, -1.00),
+      })
+      {
+         yield return [value];
+      }
+   }
+
+   public static IEnumerable<object[]> DeltaRows()
    {
       foreach (var value in new List<(Position, Position, double)>()
       {
          (new Position(2, 2), new Position(2, 2), 0.000),
 
          (new Position(2, 2), new Position(2, 3), 0.000),
-         (new Position(2, 2), new Position(3, 3), 0.125),
-         (new Position(2, 2), new Position(3, 2), 0.250),
-         (new Position(2, 2), new Position(3, 1), 0.375),
-         (new Position(2, 2), new Position(2, 1), 0.500),
+         (new Position(2, 2), new Position(3, 3), 0.100),
+         (new Position(2, 2), new Position(3, 2), 0.100),
+         (new Position(2, 2), new Position(3, 1), 0.100),
+         (new Position(2, 2), new Position(2, 1), 0.000),
 
-         (new Position(2, 2), new Position(1, 1), 0.625),
-         (new Position(2, 2), new Position(1, 2), 0.750),
-         (new Position(2, 2), new Position(1, 3), 0.875),
+         (new Position(2, 2), new Position(1, 1), -0.100),
+         (new Position(2, 2), new Position(1, 2), -0.100),
+         (new Position(2, 2), new Position(1, 3), -0.100),
+
+         (new Position(0, 0), new Position(9, 9), 0.900),
+         (new Position(0, 9), new Position(9, 0), 0.900),
+
+         (new Position(9, 9), new Position(0, 0), -0.900),
+         (new Position(9, 0), new Position(0, 9), -0.900),
+      })
+      {
+         yield return [value];
+      }
+   }
+
+   public static IEnumerable<object[]> DeltaColumns()
+   {
+      foreach (var value in new List<(Position, Position, double)>()
+      {
+         (new Position(2, 2), new Position(2, 2), 0.000),
+
+         (new Position(2, 2), new Position(2, 3), 0.100),
+         (new Position(2, 2), new Position(3, 3), 0.100),
+         (new Position(2, 2), new Position(3, 2), 0.000),
+         (new Position(2, 2), new Position(3, 1), -0.100),
+         (new Position(2, 2), new Position(2, 1), -0.100),
+
+         (new Position(2, 2), new Position(1, 1), -0.100),
+         (new Position(2, 2), new Position(1, 2), 0.000),
+         (new Position(2, 2), new Position(1, 3), 0.100),
+
+         (new Position(0, 0), new Position(9, 9), 0.900),
+         (new Position(0, 9), new Position(9, 0), -0.900),
+
+         (new Position(9, 9), new Position(0, 0), -0.900),
+         (new Position(9, 0), new Position(0, 9), 0.900),
       })
       {
          yield return [value];

@@ -13,6 +13,8 @@ public class GameState
     public bool GameOver { get; private set; }
     public bool Zerou { get; private set; }
 
+    public NeuralNetwork NeuralNetwork { get; private set; }
+
 	public GameState(int rows, int columns)
     {
         Rows = rows;
@@ -22,6 +24,24 @@ public class GameState
 
         AddSnake();
         Grid.AddFood();
+
+        // Pegar os pesos de um arquivo?
+        double[][] intermediateNeurons =
+        [
+            [100, -542, 954],
+            [542, 100, -325],
+            [-951, 572, -325],
+            [684, 755, -741],
+            [123, -951, 147],
+        ];
+        double[][] outputNeurons =
+        [
+            [684, -785, 757, -369, -159],
+            [757, 846, 528, -458, 123],
+            [-257, -489, 652, 485, -425],
+            [158, 752, -999, -745, 358],
+        ];
+        NeuralNetwork = new NeuralNetwork(intermediateNeurons, outputNeurons);
     }
 
     private void AddSnake()
@@ -220,9 +240,15 @@ public class GameState
         var headPosition = Snake.GetHeadPosition();
         var foodPosition = Grid.GetFoodPosition();
 
-        var angle = SnakExtensions.AbsoluteAngle(headPosition, foodPosition);
+        var absoluteDirection = Snake.GetHeadDirection().Absolute();
+        var absoluteDeltaRow = SnakExtensions.AbsoluteDeltaRow(headPosition, foodPosition, Rows);
+        var absoluteDeltaColumn = SnakExtensions.AbsoluteDeltaColumn(headPosition, foodPosition, Columns);
+        
+        double[] inputs = [absoluteDirection, absoluteDeltaRow, absoluteDeltaColumn];
 
-        Console.WriteLine(angle);
+        var direction = NeuralNetwork.Calculate(inputs);
+        
+        Snake.GoTo(direction);
     }
 
 
@@ -235,7 +261,7 @@ public class GameState
         var newHeadPosition = Snake.NextHeadPosition();
         var targetCell = WillHit(newHeadPosition);
 
-        if (targetCell == CellType.Outside || targetCell == CellType.Snake)
+        if (targetCell is CellType.Outside or CellType.Snake)
         {
             GameOver = true;
             return;

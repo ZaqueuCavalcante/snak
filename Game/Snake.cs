@@ -16,6 +16,11 @@ public class Snake
         CellsPositions.AddFirst(position);
     }
 
+    public Direction GetHeadDirection()
+    {
+        return HeadDirection;
+    }
+
     public Position GetHeadPosition()
     {
         return CellsPositions.First!.Value;
