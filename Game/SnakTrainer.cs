@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Game;
@@ -7,7 +8,10 @@ public static class SnakTrainer
    public static void Run()
    {
       const int epochs = 10;
-      const int populationSize = 1000;
+      const int populationSize = 100;
+
+      var timer = new Stopwatch();
+      timer.Start();
 
       var games = new List<GameState>();
       for (int i = 0; i < populationSize; i++)
@@ -32,6 +36,8 @@ public static class SnakTrainer
          var bests = games.OrderByDescending(x => x.Score).Select(x => x.NeuralNetwork).ToList();
          var slice1 = bests.TakePercent(20);
          var slice2 = bests.Skip(slice1.Count).ToList().TakePercent(40);
+
+         Console.WriteLine($"epoch = {epoch} | score = {bests.First().Score}");
 
          // Montar nova lista de redes
          var newNetworks = new List<NeuralNetwork>();
@@ -60,6 +66,11 @@ public static class SnakTrainer
             games.Add(new GameState(10, 10) { NeuralNetwork = net });
          }
       }
+
+      timer.Stop();
+
+      TimeSpan timeTaken = timer.Elapsed;
+      Console.WriteLine(">>>>> Duration: " + timeTaken.ToString(@"mm\:ss"));
 
       var best = games.Select(x => x.NeuralNetwork).OrderByDescending(x => x.Score).First();
       string jsonString = JsonSerializer.Serialize(best);

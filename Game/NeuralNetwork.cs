@@ -80,5 +80,5 @@ public class NeuralNetwork
 public class NNOutput
 {
     public double Value { get; set; }
-    public Direction Direction { get; set; }
+    public required Direction Direction { get; set; }
 }
