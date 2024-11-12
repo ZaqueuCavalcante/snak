@@ -6,7 +6,7 @@ public static class SnakTrainer
 {
    public static void Run()
    {
-      const int epochs = 100;
+      const int epochs = 10;
       const int populationSize = 1000;
 
       var games = new List<GameState>();
@@ -63,6 +63,6 @@ public static class SnakTrainer
 
       var best = games.Select(x => x.NeuralNetwork).OrderByDescending(x => x.Score).First();
       string jsonString = JsonSerializer.Serialize(best);
-      var nn = best;
+      Console.WriteLine(jsonString);
    }
 }

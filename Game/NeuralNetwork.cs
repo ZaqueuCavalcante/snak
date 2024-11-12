@@ -61,13 +61,16 @@ public class NeuralNetwork
             [Next(), Next(), Next(), Next()],
             [Next(), Next(), Next(), Next()],
             [Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next()],
         ];
         double[][] outputNeurons =
         [
-            [Next(), Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
         ];
 
         return new NeuralNetwork(intermediateNeurons, outputNeurons);
