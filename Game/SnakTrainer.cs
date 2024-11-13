@@ -1,5 +1,5 @@
-using System.Diagnostics;
 using System.Text.Json;
+using System.Diagnostics;
 
 namespace Game;
 
@@ -7,11 +7,13 @@ public static class SnakTrainer
 {
    public static void Run()
    {
-      const int epochs = 10;
-      const int populationSize = 100;
+      const int epochs = 100;
+      const int populationSize = 10_000;
 
       var timer = new Stopwatch();
       timer.Start();
+
+      var scores = new List<int>();
 
       var games = new List<GameState>();
       for (int i = 0; i < populationSize; i++)
@@ -22,22 +24,23 @@ public static class SnakTrainer
       for (int epoch = 0; epoch < epochs; epoch++)
       {
          // Botar pra jogar
-         foreach (var game in games)
+         Parallel.ForEach(games, game =>
          {
-            while (!game.GameOver & !game.Zerou & game.Steps < 2500)
+            while (!game.GameOver & !game.Zerou & game.Steps < 2000 & game.Score < 98)
             {
                game.NeuralNetworkDecision();
                game.MoveSnake();
             }
             game.NeuralNetwork.Score = game.Score;
-         }
+         });
 
          // Ordenar redes segundo o score de cada uma
          var bests = games.OrderByDescending(x => x.Score).Select(x => x.NeuralNetwork).ToList();
          var slice1 = bests.TakePercent(20);
          var slice2 = bests.Skip(slice1.Count).ToList().TakePercent(40);
 
-         Console.WriteLine($"epoch = {epoch} | score = {bests.First().Score}");
+         Console.WriteLine($"{epoch} | {bests.First().Score}");
+         scores.Add(bests.First().Score);
 
          // Montar nova lista de redes
          var newNetworks = new List<NeuralNetwork>();
@@ -68,6 +71,8 @@ public static class SnakTrainer
       }
 
       timer.Stop();
+
+      Console.WriteLine(JsonSerializer.Serialize(scores));
 
       TimeSpan timeTaken = timer.Elapsed;
       Console.WriteLine(">>>>> Duration: " + timeTaken.ToString(@"mm\:ss"));
