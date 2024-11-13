@@ -54,23 +54,27 @@ public class NeuralNetwork
             return random.NextDouble() * 2000 - 1000;
         }
 
+        // TODO: make this parametrized
         double[][] intermediateNeurons =
         [
-            [Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
         ];
         double[][] outputNeurons =
         [
-            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
-            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
+            [Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next(), Next()],
         ];
 
         return new NeuralNetwork(intermediateNeurons, outputNeurons);

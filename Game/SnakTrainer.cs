@@ -6,8 +6,8 @@ public static class SnakTrainer
 {
    public static void Run()
    {
-      const int epochs = 10;
-      const int populationSize = 1000;
+      const int epochs = 100;
+      const int populationSize = 100_000;
 
       var games = new List<GameState>();
       for (int i = 0; i < populationSize; i++)
@@ -17,8 +17,7 @@ public static class SnakTrainer
 
       for (int epoch = 0; epoch < epochs; epoch++)
       {
-         // Botar pra jogar
-         foreach (var game in games)
+         Parallel.ForEach(games, game =>
          {
             while (!game.GameOver & !game.Zerou & game.Steps < 2500)
             {
@@ -26,12 +25,14 @@ public static class SnakTrainer
                game.MoveSnake();
             }
             game.NeuralNetwork.Score = game.Score;
-         }
+         });
 
          // Ordenar redes segundo o score de cada uma
          var bests = games.OrderByDescending(x => x.Score).Select(x => x.NeuralNetwork).ToList();
          var slice1 = bests.TakePercent(20);
          var slice2 = bests.Skip(slice1.Count).ToList().TakePercent(40);
+
+         Console.WriteLine($"{epoch} - {bests.First().Score}");
 
          // Montar nova lista de redes
          var newNetworks = new List<NeuralNetwork>();
