@@ -7,13 +7,14 @@ public static class SnakTrainer
 {
    public static void Run()
    {
-      const int epochs = 100;
-      const int populationSize = 10_000;
+      const int epochs = 1000;
+      const int populationSize = 50_000;
 
       var timer = new Stopwatch();
       timer.Start();
 
       var scores = new List<int>();
+      var steps = new List<int>();
 
       var games = new List<GameState>();
       for (int i = 0; i < populationSize; i++)
@@ -26,21 +27,24 @@ public static class SnakTrainer
          // Botar pra jogar
          Parallel.ForEach(games, game =>
          {
-            while (!game.GameOver & !game.Zerou & game.Steps < 2000 & game.Score < 98)
+            while (!game.GameOver & !game.Zerou & game.Steps < 2500)
             {
                game.NeuralNetworkDecision();
                game.MoveSnake();
             }
             game.NeuralNetwork.Score = game.Score;
+            game.NeuralNetwork.Steps = game.Steps;
          });
 
          // Ordenar redes segundo o score de cada uma
-         var bests = games.OrderByDescending(x => x.Score).Select(x => x.NeuralNetwork).ToList();
+         // Pras de mesmo score, ordenar as que precisaram de menos steps
+         var bests = games.OrderByDescending(x => x.Score).ThenBy(x => x.Steps).Select(x => x.NeuralNetwork).ToList();
          var slice1 = bests.TakePercent(20);
          var slice2 = bests.Skip(slice1.Count).ToList().TakePercent(40);
 
-         Console.WriteLine($"{epoch} | {bests.First().Score}");
+         Console.WriteLine($"{epoch} | {bests.First().Score} | {bests.First().Steps}");
          scores.Add(bests.First().Score);
+         steps.Add(bests.First().Steps);
 
          // Montar nova lista de redes
          var newNetworks = new List<NeuralNetwork>();
@@ -73,12 +77,16 @@ public static class SnakTrainer
       timer.Stop();
 
       Console.WriteLine(JsonSerializer.Serialize(scores));
+      Console.WriteLine(JsonSerializer.Serialize(steps));
 
       TimeSpan timeTaken = timer.Elapsed;
       Console.WriteLine(">>>>> Duration: " + timeTaken.ToString(@"mm\:ss"));
 
-      var best = games.Select(x => x.NeuralNetwork).OrderByDescending(x => x.Score).First();
+      var best = games.Select(x => x.NeuralNetwork).OrderByDescending(x => x.Score).ThenBy(x => x.Steps).First();
       string jsonString = JsonSerializer.Serialize(best);
       Console.WriteLine(jsonString);
+
+      // var fileName = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+      // File.WriteAllText(Server.MapPath("~/JsonData/jsondata.txt"), jsonData);
    }
 }

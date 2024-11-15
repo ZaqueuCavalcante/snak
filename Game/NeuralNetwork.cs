@@ -7,6 +7,7 @@ public class NeuralNetwork
     public double[][] OutputNeurons { get; }
 
     public int Score { get; set; }
+    public int Steps { get; set; }
 
     public double[] _intermediateOutput { get; }
     public double[] _finalOutput { get; }
@@ -21,7 +22,7 @@ public class NeuralNetwork
 
     public Direction[] Calculate(double[] inputs)
     {
-        var intermediateMaxValue = inputs.Length * 1000d;
+        var intermediateMaxValue = (inputs.Length-1) * 1000d;
         for (int neuron = 0; neuron <= IntermediateNeurons.GetUpperBound(0); neuron++)
         {
             var value = SnakExtensions.Multiply(inputs, IntermediateNeurons[neuron]);

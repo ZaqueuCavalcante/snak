@@ -226,10 +226,10 @@ public class GameState
 
         var velX = Snake.GetHeadDirection().VelX();
         var velY = Snake.GetHeadDirection().VelY();
-        var absoluteDeltaRow = SnakExtensions.AbsoluteDeltaRow(headPosition, foodPosition, Rows);
-        var absoluteDeltaColumn = SnakExtensions.AbsoluteDeltaColumn(headPosition, foodPosition, Columns);
-        
-        double[] inputs = [velX, velY, absoluteDeltaRow, absoluteDeltaColumn];
+        var deltaX = SnakExtensions.AbsoluteDeltaX(headPosition, foodPosition);
+        var deltaY = SnakExtensions.AbsoluteDeltaY(headPosition, foodPosition);
+
+        double[] inputs = [velX, velY, deltaX, deltaY];
 
         var directions = NeuralNetwork.Calculate(inputs);
 

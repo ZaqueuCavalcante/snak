@@ -29,6 +29,21 @@ public static class SnakExtensions
       return 0.00;
    }
 
+   public static double AbsoluteDeltaY(Position a, Position b)
+   {
+      if (b.Row > a.Row) return 1.00;
+      if (b.Row < a.Row) return -1.00;
+      return 0.00;
+   }
+
+   public static double AbsoluteDeltaX(Position a, Position b)
+   {
+      if (b.Column > a.Column) return 1.00;
+      if (b.Column < a.Column) return -1.00;
+      return 0.00;
+   }
+
+
    public static double Absolute(this Direction direction)
    {
       if (direction == Direction.Right) return 0.50;
