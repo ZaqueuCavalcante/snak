@@ -217,8 +217,6 @@ public class GameState
         Snake.GoTo(directions[random.Next(2)]);
     }
 
-
-
     public void NeuralNetworkDecision()
     {
         var headPosition = Snake.GetHeadPosition();
@@ -243,8 +241,6 @@ public class GameState
             }
         }
     }
-
-
 
     public void MoveSnake()
     {
